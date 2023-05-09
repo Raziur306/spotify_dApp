@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from 'react'
-import play from '../../public/assets/play.svg'
+import playIcon from '../../public/assets/play.svg'
 import previous from '../../public/assets/previous.svg'
+import pauseIcon from '../../public/assets/pause.svg'
 import next from '../../public/assets/next.svg'
 import Image from 'next/image'
+import { SpotifyContext } from '../context/AudoPlayerContext'
 
 const styles = {
     mainContainer: 'flex w-full justify-center',
@@ -13,14 +15,14 @@ const styles = {
 
 
 function AudioPlayer() {
-    const audio = new Audio('https://ipfs.io/ipfs/bafybeidqrnwiqxndwtnn6cados27hxqeqrfffzd27csswwyht6zgyen7cu')
-    const mutiplayer = 100 / audio.duration;
-    const currentTime = audio.currentTime;
-    const seekbar = currentTime * mutiplayer;
-
+    const { onProgressChange, pause, play, duration, progress, isPlaying, onAudioTimeChange, isPaused } = useContext(SpotifyContext)
 
     const handleOnPlayClick = (e) => {
-        audio.play();
+        if (isPlaying) {
+            pause();
+        } else {
+            play();
+        }
     }
 
     const handleOnPreviousClick = (e) => {
@@ -32,33 +34,28 @@ function AudioPlayer() {
 
     }
 
-    const handleSeekbarChange = () => {
 
+
+    const handleOnTimeUpdate = (e) => {
+        onAudioTimeChange(e)
     }
 
-
-
-
-
-
-
-
-
     return (
-        <div className={styles.mainContainer}>
+        <div className={`${isPaused || isPlaying ? 'visible' : 'hidden'} ${styles.mainContainer}`}>
             <div className={styles.subContainer}>
                 <div className={styles.btnContainer}>
                     <button onClick={handleOnPreviousClick} className={styles.btnStyle}>
                         <Image alt='previous' width={30} height={30} src={previous} />
                     </button>
                     <button onClick={handleOnPlayClick} className={styles.btnStyle}>
-                        <Image alt='play' width={30} height={30} src={play} />
+                        <Image alt='play' width={30} height={30} src={isPlaying ? pauseIcon : playIcon} />
                     </button>
                     <button onClick={handleOnNextClick} className={styles.btnStyle}>
                         <Image alt='next' width={30} height={30} src={next} />
                     </button>
                 </div>
-                <input onChange={handleSeekbarChange} value={seekbar} type='range' />
+                <audio onTimeUpdate={handleOnTimeUpdate} src='' id='audio-element' />
+                <input min={0} max={duration} value={progress} onChange={onProgressChange} type='range' />
             </div>
         </div>
     )

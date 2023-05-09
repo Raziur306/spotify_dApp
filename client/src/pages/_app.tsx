@@ -3,6 +3,7 @@ import NextHead from 'next/head'
 import * as React from 'react'
 import '../globals.css'
 import { WagmiProvider } from '../context/wagmiContext'
+import { SpotifyContextProvider } from '../context/AudoPlayerContext'
 
 
 function App({ Component, pageProps }: AppProps) {
@@ -10,11 +11,12 @@ function App({ Component, pageProps }: AppProps) {
   React.useEffect(() => setMounted(true), [])
   return (
     <WagmiProvider>
-      <NextHead>
-        <title>wagmi</title>
-      </NextHead>
-
-      {mounted && <Component {...pageProps} />}
+      <SpotifyContextProvider>
+        <NextHead>
+          <title>Spotify Web3.0</title>
+        </NextHead>
+        {mounted && <Component {...pageProps} />}
+      </SpotifyContextProvider>
     </WagmiProvider>
   )
 }

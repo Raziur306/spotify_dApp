@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
-import { readContract } from '@wagmi/core'
+import playIcon from '../../public/assets/play.svg'
+import pauseIcon from '../../public/assets/pause.svg'
+import React, { useContext, useEffect, useState } from 'react'
 import { useAccount, useContractRead, useTransaction } from 'wagmi';
 import { AudioPlayer, FavouriteCard, UploadDialog } from '../components';
 import Image from 'next/image';
 import TableRow from '../components/TableRow';
+import { SpotifyContext } from '../context/AudoPlayerContext';
 const { abi } = require('../contract/Spotify.json')
 
 const styles = {
@@ -32,6 +34,8 @@ const Dashboard = () => {
   const [uploadDialogState, setUploadDialogState] = useState(false);
   const [dataChangeState, setDataChangeState] = useState(false);
   const [songList, setSongList] = useState(null);
+  const { play, pause, isPlaying, setAllSongs, allSongs } = useContext(SpotifyContext);
+
 
   const handleUploadDialog = () => {
     setUploadDialogState(true)
@@ -41,10 +45,13 @@ const Dashboard = () => {
     setDataChangeState(true);
   }
 
-
-
-
-
+  const handleOnPlayBtnClick = () => {
+    if (isPlaying) {
+      pause();
+    } else {
+      play();
+    }
+  }
 
 
   useEffect(() => {
@@ -66,9 +73,12 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    // console.log(data);
+    setAllSongs(data);
+  }, [dataChangeState, data])
 
-  }, [dataChangeState])
+  // useEffect(() => {
+
+  // }, [allSongs])
 
 
 
@@ -158,9 +168,8 @@ const Dashboard = () => {
       </div>
 
       <div className='flex mt-10 flex-row gap-10  mb-auto'>
-        <button className='bg-green-600 w-20 h-20 flex justify-center items-center rounded-full'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-          <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
-        </svg>
+        <button onClick={handleOnPlayBtnClick} className='bg-green-600 w-20 h-20 flex justify-center items-center rounded-full'>
+          <Image alt='main_play' width={50} height={50} src={isPlaying ? pauseIcon : playIcon} />
         </button>
         <button>
           <svg className='text-red-600 w-6 h-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
@@ -197,10 +206,8 @@ const Dashboard = () => {
 
 
 
-          {data && data.map((song, index) => {
-            console.log(song)
-            return <TableRow key={index} index={`${index + 1}`} title={song.title} played={'100000'} duration={'10m'} />
-
+          {allSongs && allSongs?.map((song, index) => {
+            return <TableRow key={index} index={index} title={song.title} url={song.url} played={'100000'} duration={'10m'} />
           })
           }
 
