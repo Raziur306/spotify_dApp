@@ -1,35 +1,27 @@
 import { useAccount } from 'wagmi'
-import { Dashboard, Login } from '../components'
+import { Login } from '../components'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router';
 
 
 function Page() {
-  const { isConnected } = useAccount();
-  
 
+  const paymentStatus = localStorage.getItem('paymentStatus');
+  const [loading, setLoadingState] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (paymentStatus == 'successful') {
+      router.push('/dashboard');
+    } else {
+      setLoadingState(false);
+    }
+  })
 
 
   return (
     <>
-    {<Login/>}
-
-
-
-
-
-
-
-
-
-      {/* <h1>wagmi + Next.js</h1>
-
-      <Connect />
-
-      {isConnected && (
-        <>
-          <Account />
-          <NetworkSwitcher />
-        </>
-      )} */}
+      {!loading && <Login />}
     </>
   )
 }

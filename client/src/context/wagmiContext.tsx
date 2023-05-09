@@ -8,13 +8,10 @@ import { publicProvider } from 'wagmi/providers/public'
 
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet, ...(process.env.NODE_ENV === 'development' ? [sepolia] : [])],
-  [
-    publicProvider(),
-  ],
+  [sepolia], [publicProvider()],
 )
 
- const client = createClient({
+const client = createClient({
   autoConnect: true,
   connectors: [
     new MetaMaskConnector({ chains }),
@@ -40,6 +37,6 @@ interface WagmiProviderProps {
   children: ReactNode;
 }
 
-export const WagmiProvider: FC<WagmiProviderProps> = ({children})=>{
+export const WagmiProvider: FC<WagmiProviderProps> = ({ children }) => {
   return <WagmiConfig client={client}>{children}</WagmiConfig>
 }
