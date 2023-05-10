@@ -1,6 +1,5 @@
 import { ReactNode, FC } from 'react'
 import { WagmiConfig, configureChains, createClient, sepolia } from 'wagmi'
-import { goerli, mainnet } from 'wagmi/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'

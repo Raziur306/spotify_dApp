@@ -10,12 +10,14 @@ const styles = {
     mainContainer: 'flex w-full justify-center',
     subContainer: 'flex w-full flex-col justify-center gap-6',
     btnContainer: 'flex flex-row gap-3 justify-center',
-    btnStyle: 'active:bg-green-400 active:rounded-full p-3 flex justify-center'
+    btnStyle: 'active:bg-green-400 active:rounded-full p-3 flex justify-center',
+    timeStamp: `absolute text-sm`
 }
 
 
 function AudioPlayer() {
-    const { onProgressChange, pause, play, duration, progress, isPlaying, onAudioTimeChange, isPaused } = useContext(SpotifyContext)
+    const { onProgressChange, pause, play, duration, progress, isPlaying, onAudioTimeChange, isPaused, playNext,
+        playPrevious, timestamp } = useContext(SpotifyContext)
 
     const handleOnPlayClick = (e) => {
         if (isPlaying) {
@@ -26,12 +28,11 @@ function AudioPlayer() {
     }
 
     const handleOnPreviousClick = (e) => {
-
+        playPrevious();
     }
 
     const handleOnNextClick = (e) => {
-
-
+        playNext();
     }
 
 
@@ -43,6 +44,7 @@ function AudioPlayer() {
     return (
         <div className={`${isPaused || isPlaying ? 'visible' : 'hidden'} ${styles.mainContainer}`}>
             <div className={styles.subContainer}>
+                <small className={styles.timeStamp}>{timestamp}</small>
                 <div className={styles.btnContainer}>
                     <button onClick={handleOnPreviousClick} className={styles.btnStyle}>
                         <Image alt='previous' width={30} height={30} src={previous} />
@@ -55,7 +57,7 @@ function AudioPlayer() {
                     </button>
                 </div>
                 <audio onTimeUpdate={handleOnTimeUpdate} src='' id='audio-element' />
-                <input min={0} max={duration} value={progress} onChange={onProgressChange} type='range' />
+                <input min={0} max={duration} value={`${progress}`} onChange={onProgressChange} type='range' />
             </div>
         </div>
     )

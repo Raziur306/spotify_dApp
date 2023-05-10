@@ -37,6 +37,7 @@ export const SpotifyContextProvider = ({ children }: ChildrenType) => {
             setIsPlaying(true);
         } else {
             audio.src = allSongs[0].url
+            setCurrentSong(0);
             audio.play();
             setIsPlaying(true);
         }
@@ -93,12 +94,32 @@ export const SpotifyContextProvider = ({ children }: ChildrenType) => {
 
 
     const playNext = () => {
-
+        const audio = document.querySelector('#audio-element') as HTMLAudioElement
+        if (currentSong < (allSongs.length - 1) && allSongs) {
+            audio.src = allSongs[currentSong + 1].url;
+            setCurrentSong(currentSong + 1)
+        } else {
+            audio.src = allSongs[0].url;
+            setCurrentSong(0)
+        }
+        if (isPlaying) {
+            audio.play();
+        }
 
     }
 
     const playPrevious = () => {
-
+        const audio = document.querySelector('#audio-element') as HTMLAudioElement
+        if (currentSong > 0) {
+            audio.src = allSongs[currentSong - 1].url;
+            setCurrentSong(currentSong - 1)
+        } else {
+            audio.src = allSongs[allSongs.length - 1].url;
+            setCurrentSong(allSongs.length - 1)
+        }
+        if (isPlaying) {
+            audio.play();
+        }
 
     }
 

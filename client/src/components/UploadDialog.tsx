@@ -6,8 +6,8 @@ const { abi } = require('../contract/Spotify.json');
 
 
 function UploadDialog(param: { onDismiss: Function }) {
-  
-  const { AddNewSong, isFileUploading, isFileUploaded } = useContext(ContractContext)
+
+  const { addNewSong, isFileUploading, isFileUploaded } = useContext(ContractContext)
 
 
   const { onDismiss } = param;
@@ -27,7 +27,7 @@ function UploadDialog(param: { onDismiss: Function }) {
 
   const handleFileUploadClick = async () => {
     if (songTitle && audioFile) {
-      AddNewSong(songTitle, audioFile)
+      addNewSong(songTitle, audioFile)
     }
   }
 

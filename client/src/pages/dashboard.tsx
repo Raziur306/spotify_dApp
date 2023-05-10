@@ -11,6 +11,7 @@ import { ContractContext } from '../context/ContractContext';
 const { abi } = require('../contract/Spotify.json')
 
 const styles = {
+  container:`flex flex-row text-gray-300 h-screen`,
   menu: `text-white flex flex-row gap-3 cursor-pointer`,
   suggestLi: `hover:text-white cursor-pointer`,
   tableWrapper: `max-w-7xl m-auto p-3 mt-5 mb-40`,
@@ -72,7 +73,8 @@ const Dashboard = () => {
 
 
 
-  return (<div className='flex flex-row text-gray-300 h-screen'>
+  return (
+  <div className={styles.container}>
     <div className='bg-black w-1/5 h-screen p-5 flex flex-col gap-6'>
       <div className='flex flex-col gap-8 '>
         <ul className='flex flex-col gap-6'>
@@ -197,7 +199,7 @@ const Dashboard = () => {
 
 
           {allSongs && allSongs?.map((song, index) => {
-            return <TableRow key={index} index={index} title={song.title} url={song.url} played={'100000'} duration={'10m'} />
+            return <TableRow key={index} index={index} title={song.title} url={song.url} played={'100000'} />
           })
           }
 
