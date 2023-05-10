@@ -7,6 +7,7 @@ import { AudioPlayer, FavouriteCard, UploadDialog } from '../components';
 import Image from 'next/image';
 import TableRow from '../components/TableRow';
 import { SpotifyContext } from '../context/AudoPlayerContext';
+import { ContractContext } from '../context/ContractContext';
 const { abi } = require('../contract/Spotify.json')
 
 const styles = {
@@ -34,7 +35,8 @@ const Dashboard = () => {
   const [uploadDialogState, setUploadDialogState] = useState(false);
   const [dataChangeState, setDataChangeState] = useState(false);
   const [songList, setSongList] = useState(null);
-  const { play, pause, isPlaying, setAllSongs, allSongs } = useContext(SpotifyContext);
+  const { play, pause, isPlaying, allSongs } = useContext(SpotifyContext);
+  const { GetAllSongs, isFileUploaded } = useContext(ContractContext);
 
 
   const handleUploadDialog = () => {
@@ -42,7 +44,6 @@ const Dashboard = () => {
   }
   const handleDialogDismiss = () => {
     setUploadDialogState(false);
-    setDataChangeState(true);
   }
 
   const handleOnPlayBtnClick = () => {
@@ -53,6 +54,13 @@ const Dashboard = () => {
     }
   }
 
+  useEffect(() => {
+    if (isFileUploaded) {
+      setUploadDialogState(false);
+    }
+  }, [isFileUploaded])
+
+
 
   useEffect(() => {
     if (paymentStatus != 'successful' || !isConnected) {
@@ -61,24 +69,6 @@ const Dashboard = () => {
     }
 
   }, [paymentStatus, isConnected])
-
-
-
-
-  const { data, isError, isLoading } = useContractRead({
-    address: `0x${process.env.NEXT_PUBLIC_CONTRACT_ADDRESS}`,
-    abi: abi,
-    functionName: 'getMusic',
-  });
-
-
-  useEffect(() => {
-    setAllSongs(data);
-  }, [dataChangeState, data])
-
-  // useEffect(() => {
-
-  // }, [allSongs])
 
 
 

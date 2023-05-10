@@ -4,6 +4,7 @@ import * as React from 'react'
 import '../globals.css'
 import { WagmiProvider } from '../context/wagmiContext'
 import { SpotifyContextProvider } from '../context/AudoPlayerContext'
+import { ContractContextProvider } from '../context/ContractContext'
 
 
 function App({ Component, pageProps }: AppProps) {
@@ -12,10 +13,12 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiProvider>
       <SpotifyContextProvider>
-        <NextHead>
-          <title>Spotify Web3.0</title>
-        </NextHead>
-        {mounted && <Component {...pageProps} />}
+        <ContractContextProvider>
+          <NextHead>
+            <title>Spotify Web3.0</title>
+          </NextHead>
+          {mounted && <Component {...pageProps} />}
+        </ContractContextProvider>
       </SpotifyContextProvider>
     </WagmiProvider>
   )

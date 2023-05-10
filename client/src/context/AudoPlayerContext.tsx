@@ -24,9 +24,6 @@ export const SpotifyContextProvider = ({ children }: ChildrenType) => {
             audio?.addEventListener('timeupdate', () => {
                 setTimestamp(secondsToMinSec(audio.currentTime))
             }, false)
-
-
-
         }
     }, [isPlaying])
 
@@ -39,7 +36,7 @@ export const SpotifyContextProvider = ({ children }: ChildrenType) => {
             audio.play();
             setIsPlaying(true);
         } else {
-            audio.src = allSongs[1].url
+            audio.src = allSongs[0].url
             audio.play();
             setIsPlaying(true);
         }
@@ -54,11 +51,13 @@ export const SpotifyContextProvider = ({ children }: ChildrenType) => {
     }
 
 
-    const playOnSongSelect = ({ index }: { index: number }) => {
-        console.log('clicked')
+    const playOnSongSelect = (index: number) => {
+
         try {
-            const audio = document.querySelector('#audo-element') as HTMLAudioElement
-            audio.src = 'allSongs[index].url'
+            const audio = document.querySelector('#audio-element') as HTMLAudioElement
+            const url = allSongs[index].url
+            audio.src = url
+            audio.play();
             setCurrentSong(index);
             setIsPlaying(true)
             setIsPaused(false)
@@ -71,7 +70,6 @@ export const SpotifyContextProvider = ({ children }: ChildrenType) => {
     const secondsToMinSec = (value: any) => {
         const minute = Math.round(value / 60);
         let second = Math.round(value % 60);
-        const time = second >= 10 ? second : '0' + second;
         return minute + ':' + second;
     }
 
@@ -87,7 +85,6 @@ export const SpotifyContextProvider = ({ children }: ChildrenType) => {
     }
 
     const onAudioTimeChange = (e) => {
-        console.log(e.target.currentTime)
         const time = e.target.currentTime / e.target.duration;
         setProgress(time * 100)
     }
