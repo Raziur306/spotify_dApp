@@ -11,8 +11,8 @@ const styles = {
   dismissBtn: `absolute text-white top-0 right-0 p-2`,
   titleStyle: `text-black p-1`,
   fileInput: `text-white`,
-  flexRow: `"flex flex-row`,
-  uploadBtnStyle: `bg-green-500 justify-center flex items-center text-white p-2 rounded-full`
+  flexRow: `flex flex-row`,
+  uploadBtnStyle: `flex items-center bg-green-500 justify-center text-white p-2 rounded-full`
 }
 
 

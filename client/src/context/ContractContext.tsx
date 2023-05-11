@@ -4,7 +4,7 @@ import { useContractRead, useContractWrite, usePrepareContractWrite, } from "wag
 import { SpotifyContext } from "./AudoPlayerContext";
 import { NFTStorage, File } from 'nft.storage'
 import { parseEther } from "ethers/lib/utils.js";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 
 
@@ -56,8 +56,8 @@ export const ContractContextProvider = ({ children }: ChildrenType) => {
         functionName: 'updateList',
         args: [songTitle, fileUrl],
         overrides: {
-            gasLimit: parseEther('0.00030'),
-            maxFeePerGas: parseEther('0.000000002'),
+            gasLimit: BigNumber.from(40000),
+            maxFeePerGas: parseEther('0.000001')
         }
     })
 
